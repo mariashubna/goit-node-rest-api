@@ -41,6 +41,15 @@ async function updateContact(contactId, updatedFields) {
   }
 
   const updatedContact = contacts.find((el) => el.id === contactId);
+
+   if (
+    !Object.keys(updatedFields).some(
+      (key) => updatedFields[key] !== undefined
+    )
+  ) {
+    throw new HttpError(400, "Body must have at least one field");
+  }
+
   contacts[contactIndex] = { contactId, ...updatedContact, ...updatedFields };
 
   await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));

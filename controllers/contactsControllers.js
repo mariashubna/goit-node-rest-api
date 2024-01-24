@@ -29,7 +29,7 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deletedContact = await removeContact(id);
+    const deletedContact = await contactsService.removeContact(id);
 
     if (!deletedContact) {
       throw HttpError(404, "Not found");
@@ -73,6 +73,8 @@ export const updateContact = [
       if (!updatedContact) {
         throw HttpError(404, "Not found");
       }
+
+      
 
       res.status(200).json(updatedContact);
     } catch (error) {
