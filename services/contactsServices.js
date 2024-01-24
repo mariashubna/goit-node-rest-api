@@ -34,28 +34,23 @@ async function addContact(name, email, phone) {
 
 async function updateContact(contactId, updatedFields) {
   const contacts = await listContacts();
-  const contactIndex = contacts.findIndex((el) => el.id === contactId);
+  const contactById = contacts.find(({ id }) => id === contactId);
+  if (!contactById) return null;
 
-  if (contactIndex === -1) {
-    return null;
-  }
-
-  const updatedContact = contacts.find((el) => el.id === contactId);
-
-   if (
-    !Object.keys(updatedFields).some(
-      (key) => updatedFields[key] !== undefined
-    )
-  ) {
-    throw new HttpError(400, "Body must have at least one field");
-  }
-
-  contacts[contactIndex] = { contactId, ...updatedContact, ...updatedFields };
-
-  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-
-  return contacts[contactIndex];
+  const changedContact = {
+    id: contactId,
+    name: updatedFields.name || contactById.name,
+    email: updatedFields.email || contactById.email,
+    phone: updatedFields.phone || contactById.phone,
+  };
+  const updatedContacts = [
+    ...contacts.filter(({ id }) => id !== contactId),
+    changedContact,
+  ];
+  await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
+  return changedContact;
 }
+
 
 
 
