@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { nanoid } from "nanoid";
+import Contact from '../models/model.js';
 
 const contactsPath = path.resolve("db", "contacts.json");
 
@@ -51,7 +52,18 @@ async function updateContact(contactId, updatedFields) {
   return changedContact;
 }
 
+async function updateFavoriteStatus(contactId, favorite) {
+  const contact = await Contact.findById(contactId);
 
+  if (!contact) {
+    return null;
+  }
+
+  contact.favorite = favorite;
+  await contact.save();
+
+  return contact;
+}
 
 
 export {
@@ -60,4 +72,5 @@ export {
   removeContact,
   addContact,
   updateContact,
+  updateFavoriteStatus,
 };
