@@ -8,6 +8,7 @@ import {
 
 export const getAllContacts = async (req, res) => {
   const contacts = await contactsService.listContacts();
+  console.log("Contacts in Controller:", contacts);
   res.status(200).json(contacts);
 };
 

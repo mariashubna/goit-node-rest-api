@@ -4,7 +4,6 @@ import cors from "cors";
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-
 import contactsRouter from "./routes/contactsRouter.js";
 
 dotenv.config();
@@ -22,6 +21,7 @@ mongoose
     console.log(error.message);
     process.exit(1);
   });
+
 
 app.use(morgan("tiny"));
 app.use(cors());
