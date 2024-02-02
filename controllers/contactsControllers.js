@@ -94,7 +94,7 @@ export const updateFavoriteStatus = async (req, res, next) => {
     const { id } = req.params;
     const { favorite } = req.body;
 
-    const updatedContact = await contactsService.updateFavoriteStatus(id, favorite);
+    const updatedContact = await contactsService.updateStatusContact(id, favorite);
 
     if (!updatedContact) {
       throw HttpError(404, "Not found");

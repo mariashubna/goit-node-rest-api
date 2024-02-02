@@ -16,8 +16,8 @@ async function removeContact(contactId) {
   return contactById || null;
 }
 
-async function addContact(data) {
-  const newContact = Contact.create(data);
+async function addContact(name, email, phone) {
+  const newContact = await Contact.create({ name, email, phone });
   return newContact;
 }
 
@@ -32,11 +32,14 @@ async function updateContact(contactId, updatedFields) {
   return changedContact || null;
 }
 
-async function updateFavoriteStatus(contactId, data) {
-  const changedContact = await Contact.findByIdAndUpdate(contactId, data, {
-    new: true,
-  });
-  return changedContact || null;
+async function updateStatusContact(contactId, favorite) {
+  const updatedContact = await Contact.findByIdAndUpdate(
+    contactId,
+    { favorite },
+    { new: true }
+  );
+
+  return updatedContact || null;
 }
 
 export {
@@ -45,5 +48,5 @@ export {
   removeContact,
   addContact,
   updateContact,
-  updateFavoriteStatus,
+  updateStatusContact,
 };
