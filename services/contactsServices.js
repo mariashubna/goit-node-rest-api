@@ -32,14 +32,11 @@ async function updateContact(contactId, updatedFields) {
   return changedContact || null;
 }
 
-async function updateStatusContact(contactId, favorite) {
-  const updatedContact = await Contact.findByIdAndUpdate(
-    contactId,
-    { favorite },
-    { new: true }
-  );
-
-  return updatedContact || null;
+async function updateStatusContact(contactId, data) {
+  const changedContact = await Contact.findByIdAndUpdate(contactId, data, {
+    new: true,
+  });
+  return changedContact || null;
 }
 
 export {
