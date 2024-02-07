@@ -1,10 +1,9 @@
 import Contact from '../models/contact.js';
 import { HttpError } from "../helpers/HttpError.js";
 import validateBody from "../helpers/validateBody.js";
-import isIdValid from '../helpers/isValidId.js';
 import { updateContactSchema } from '../schemas/contactsSchemas.js'
 
-export const getAllContacts = async (req, res) => {
+export const getAllContacts = async (req, res, next) => {
   try {
     const { page = 1, limit = 5, favorite } = req.query;
     const { _id: owner } = req.user;
@@ -36,7 +35,6 @@ export const getAllContacts = async (req, res) => {
 export const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    isIdValid(id);
 
     const { _id: owner } = req.user;
     const contact = await Contact.findById(id).where("owner").equals(owner);
@@ -54,7 +52,6 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    isIdValid(id);
     
     const { _id: owner } = req.user;
     const deletedContact = await Contact.findByIdAndDelete(id)

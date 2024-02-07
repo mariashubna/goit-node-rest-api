@@ -14,7 +14,7 @@ export const register = async (req, res, next) => {
 
     if (usedEmail) throw HttpError(409, "Email in use");
 
-    const { password, ...userData } = req.body;
+    const { password } = req.body;
    
     const hashPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ ...req.body, password: hashPassword });
