@@ -9,7 +9,9 @@ import {
   logout,
   current,
   updateSubscription,
+  newAvatar,
 } from "../controllers/usersControllers.js";
+import upload from "../helpers/upload.js"
 
 const usersRouter = express.Router();
 
@@ -18,5 +20,6 @@ usersRouter.post("/login", validateBody(createUserSchema), login);
 usersRouter.post("/logout", authenticate, logout);
 usersRouter.get("/current", authenticate, current);
 usersRouter.patch("/", authenticate, validateBody(updateSubscriptionSchema), updateSubscription);
+usersRouter.patch("/avatars", authenticate, upload.single("avatarURL"), newAvatar);
 
 export default usersRouter;
