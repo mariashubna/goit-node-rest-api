@@ -119,7 +119,7 @@ export const newAvatar = async (req, res, next) => {
 
     const avatar = await Jimp.read(tempUpload);
     avatar.resize(250, 250).write(resultUpload);
-    await fs.promises.unlink(tempUpload);
+    await fs.rename(tempUpload, resultUpload);
 
     await User.findByIdAndUpdate(_id, { avatarURL: resultUpload });
 
