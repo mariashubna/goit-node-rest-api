@@ -115,7 +115,7 @@ export const newAvatar = async (req, res, next) => {
     const { path: tempUpload, originalname } = req.file;
 
     const fileName = `${_id}_${originalname}`;
-    const resultUpload = path.join("public", "avatars", fileName);
+    const resultUpload = path.join("avatars", fileName);
 
     const avatar = await Jimp.read(tempUpload);
     avatar.resize(250, 250).write(resultUpload);
