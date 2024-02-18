@@ -30,6 +30,7 @@ export const register = async (req, res, next) => {
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
+        avatarURL: newUser.avatarURL,
       },
     });
   } catch (error) {
@@ -68,6 +69,7 @@ export const login = async (req, res, next) => {
       user: {
         email: loggedUser.email,
         subscription: loggedUser.subscription,
+        avatarURL: loggedUser.avatarURL,
       },
     });
   } catch (error) {
@@ -87,8 +89,8 @@ export const logout = async (req, res) => {
 
 export const current = async (req, res) => {
   try {
-    const { email, subscription } = req.user;
-    res.status(200).json({ email, subscription });
+    const { email, subscription, avatarURL } = req.user;
+    res.status(200).json({ email, subscription, avatarURL });
   } catch (error) {
     next(error);
   }
@@ -115,7 +117,7 @@ export const newAvatar = async (req, res, next) => {
     const { path: tempUpload, originalname } = req.file;
 
     const fileName = `${_id}_${originalname}`;
-    const resultUpload = path.join("avatars", fileName);
+    const resultUpload = path.join("public", "avatars", fileName);
 
     const avatar = await Jimp.read(tempUpload);
     avatar.resize(250, 250).write(resultUpload);
@@ -123,7 +125,9 @@ export const newAvatar = async (req, res, next) => {
 
     await User.findByIdAndUpdate(_id, { avatarURL: resultUpload });
 
-    res.status(200).json({ avatarURL: resultUpload });
+    const visibleURL = path.join("avatars", fileName);
+
+    res.status(200).json({ avatarURL: visibleURL });
   } catch (error) {
     next(error);
   }
