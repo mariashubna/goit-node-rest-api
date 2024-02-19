@@ -112,7 +112,7 @@ export const newAvatar = async (req, res, next) => {
   try {
     const { _id } = req.user;
 
-    if (!req.file) throw new Error("Avatar needs to be added");
+    if (!req.file) throw Error("Avatar needs to be added");
 
     const { path: tempUpload, originalname } = req.file;
 
