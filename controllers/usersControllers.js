@@ -29,12 +29,14 @@ export const register = async (req, res, next) => {
 
 
     const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationToken, });
-    
+
+      
     const verifyEmail = {
       to: [email],
       subject: "Verify your email",
       html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}">Click here to verify email</a>`,
     };
+
 
     await sendEmail(verifyEmail);
 
@@ -108,7 +110,7 @@ export const login = async (req, res, next) => {
 
     if (!enteredUser) throw HttpError(401, "Email or password is wrong");
 
-    if (!user.verify) throw HttpError(401, "Email isn't verified");
+    if (!enteredUser.verify) throw HttpError(401, "Email isn't verified");
 
     const passwordIsValid = await bcrypt.compare(
       password,
